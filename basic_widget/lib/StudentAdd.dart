@@ -5,14 +5,22 @@ import 'package:flutter/material.dart';
 import 'Student.dart';
 
 class StudentAdd extends StatefulWidget {
+  List<Student> ?students;
+  StudentAdd(List<Student> students) {
+    this.students = students;
+  }
+
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _StudentAdd();
+    return _StudentAdd(students!);
   }
 }
 
 class _StudentAdd extends State with StudentValidationMixin {
+   List<Student> ?students;
+  _StudentAdd(List<Student> students) {
+    this.students = students;
+  }
   var student = Student.witoutInfo();
   var formKey = GlobalKey<FormState>();
   @override
@@ -50,7 +58,7 @@ class _StudentAdd extends State with StudentValidationMixin {
         }
         return validateFirstName(value);
       },
-      onSaved: (String? value){
+      onSaved: (String? value) {
         student.firstName = value!;
       },
     );
@@ -66,9 +74,9 @@ class _StudentAdd extends State with StudentValidationMixin {
         if (value == null || value.isEmpty) {
           return 'Please enter some text';
         }
-       return validateLastName(value);
+        return validateLastName(value);
       },
-      onSaved: (String? value){
+      onSaved: (String? value) {
         student.lastName = value!;
       },
     );
@@ -86,21 +94,24 @@ class _StudentAdd extends State with StudentValidationMixin {
         }
         return validateGrade(value);
       },
-      onSaved: (String? value){
+      onSaved: (String? value) {
         student.grade = int.parse(value!);
+        student.image = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
       },
     );
   }
 
   buildSubmitButton() {
     return RaisedButton(
-        child: Text("Kaydet"),
-        onPressed: (){
-          if (formKey.currentState!.validate()){
-            formKey.currentState?.save();
-            saveStudent();
-          }
-        },
+      child: Text("Kaydet"),
+      onPressed: () {
+        if (formKey.currentState!.validate()) {
+          formKey.currentState?.save();
+          students?.add(student);
+          saveStudent();
+          Navigator.pop(context);
+        }
+      },
     );
   }
 

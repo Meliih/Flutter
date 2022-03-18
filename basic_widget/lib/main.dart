@@ -1,8 +1,8 @@
 import 'package:basic_widget/Student.dart';
 import 'package:basic_widget/StudentAdd.dart';
-
+import 'package:basic_widget/StudentEdit.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; // android tasarımı görünümünde
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentAdd()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentAdd(students)));
                 },
               ),
             ),
@@ -108,8 +108,8 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
-                  var message = "Güncellendi";
-                  showMessage(context, message);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentEdit(selectedStudent)));
+
                 },
               ),
             ),

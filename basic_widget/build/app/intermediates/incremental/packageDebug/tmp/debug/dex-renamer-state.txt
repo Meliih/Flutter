@@ -1,4 +1,4 @@
-#Mon Mar 14 13:05:07 TRT 2022
+#Fri Mar 18 15:36:25 TRT 2022
 base.0=C\:\\Flutter\\basic_widget\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
