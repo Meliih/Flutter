@@ -1,24 +1,29 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'DbHelper.dart';
 
 class DoctorDetailPage extends StatefulWidget {
+
+  final Trainer trainer;
+  const DoctorDetailPage({Key? key, required this.trainer, }) : super(key: key);
+
+
   @override
-  State<StatefulWidget> createState() => _DoctorDetailState();
+  _DoctorDetailState createState() => _DoctorDetailState();
 }
 
 class _DoctorDetailState extends State<DoctorDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return initWidget(context);
+    return initWidget(context,widget.trainer);
   }
 
-  Widget initWidget(BuildContext context) {
+  Widget initWidget(BuildContext context,Trainer trainer) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color(0xff053F5E),
+        backgroundColor: Colors.purple,
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
@@ -31,6 +36,9 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
         ),
         actions: [
           GestureDetector(
+            onTap: (){
+
+            },
             child: Container(
               margin: EdgeInsets.only(right: 15),
               child: Icon(
@@ -46,9 +54,9 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 200,
+              height: 150,
               decoration: BoxDecoration(
-                  color: Color(0xff053F5E),
+                  color: Colors.purple,
                   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))
               ),
               child: Container(
@@ -58,7 +66,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                     Container(
                       margin: EdgeInsets.only(bottom: 20),
                       child: Image.asset(
-                        "assets/dr_details.png",
+                        trainer.img,
                       ),
                     ),
                     Container(
@@ -69,7 +77,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 30),
-                            child: Text('Dr. Fred Mask',
+                            child: Text(trainer.name,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
@@ -80,7 +88,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10),
-                            child: Text('Heart surgen',
+                            child: Text(trainer.domain,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -91,7 +99,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 15),
-                            child: Text('Rating: 4.5',
+                            child: Text('Puan: '+ trainer.rating,
                               style: TextStyle(
                                 color: Colors.yellow,
                                 fontSize: 15,

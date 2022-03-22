@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:twist_appointment_app/DbHelper.dart';
 import 'Doctor_details_page.dart';
 
 class CategoryTrainer extends StatefulWidget {
-  const CategoryTrainer({Key? key}) : super(key: key);
+
+  final List<Trainer> trainers;
+  final int selectedCategory;
+
+  const CategoryTrainer({Key? key, required this.trainers,required this.selectedCategory}) : super(key: key);
+
 
   @override
   State<CategoryTrainer> createState() => _CategoryTrainerState();
@@ -13,6 +18,10 @@ class CategoryTrainer extends StatefulWidget {
 class _CategoryTrainerState extends State<CategoryTrainer> {
   @override
   Widget build(BuildContext context) {
+    return initWidget(context, widget.trainers,widget.selectedCategory);
+  }
+
+  Widget initWidget(BuildContext context, List<Trainer> trainers,int selectedCategory) {
     //Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.purple,
@@ -47,57 +56,43 @@ class _CategoryTrainerState extends State<CategoryTrainer> {
           Expanded(
             child: Container(
               margin: EdgeInsets.only(left: 20, right: 20),
-              child: ListView(
-                children: [
-                  demoTopRatedDr(
-                    "image/woman.png",
-                    "Çağla Öner",
-                    "Heart surgen",
-                    "4.1",
-                    "",
-                  ),
-                  demoTopRatedDr(
-                    "assets/dr_2.png",
-                    "Zeliha",
-                    "Bone Specialist",
-                    "4.2",
-                    "",
-                  ),
-                  demoTopRatedDr(
-                    "assets/dr_3.png",
-                    "Sibel",
-                    "Eyes Specialist",
-                    "4.4",
-                    "",
-                  ),
-                  demoTopRatedDr("assets/dr_2.png", "Dr. Fred Mask",
-                      "Heart surgen", "4.3", ""),
-                ],
+              child: ListView.builder(
+                  itemCount: trainers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (selectedCategory == trainers[index].category_id)
+                      {
+                        return demoTopRatedDr(context, trainers[index]);
+                      }
+                    return SizedBox(width: 0,);
+                  }
               ),
             ),
+
           ),
         ],
       ),
     );
   }
+}
+  Widget demoTopRatedDr(BuildContext context, Trainer trainer) {
 
-  Widget demoTopRatedDr(String img, String name, String speciality,
-      String rating, String distance) {
     var size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DoctorDetailPage()));
+        /*Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DoctorDetailPage()));*/
       },
-      child: Container(
-        height: 90,
+      child:
+      Container(
+        height: 115,
         // width: size.width,
         margin: EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Row(
+        child: _buildRow(context,trainer),
+        /*Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -130,7 +125,7 @@ class _CategoryTrainerState extends State<CategoryTrainer> {
                     child: Row(
                       children: [
                         Text(
-                          "namasdasdse",
+                          name,
                           style: TextStyle(
                             color: Color(0xffababab),
                             fontFamily: 'Roboto',
@@ -145,14 +140,14 @@ class _CategoryTrainerState extends State<CategoryTrainer> {
                           child: Row(
                             children: <Widget>[
                               Container(
-                                child: Text(
-                                  "Puan: ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontFamily: 'Roboto',
-                                  ),
+                              child: Text(
+                                "Puan: ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontFamily: 'Roboto',
                                 ),
+                              ),
                               ),
                               Container(
                                 child: Text(
@@ -174,8 +169,58 @@ class _CategoryTrainerState extends State<CategoryTrainer> {
               ),
             ),
           ],
-        ),
+        ),*/
       ),
     );
   }
-}
+
+  Widget _buildRow(BuildContext context,Trainer trainer) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: <Widget>[
+          CircleAvatar(
+            radius: 35,
+            backgroundImage: AssetImage(trainer.img),
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(trainer.name, style: TextStyle(color: Colors.grey)),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(trainer.domain, style: TextStyle(color: Colors.grey)),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(trainer.rating, style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text("Puan", style: TextStyle(color: Colors.grey)),
+                      ],
+                    ),
+                  ],
+                ),
+                OutlineButton(onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DoctorDetailPage(trainer:trainer)));
+                }, child: Text("Randevu Al")),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+

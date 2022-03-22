@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twist_appointment_app/CategoryTrainer.dart';
+import 'package:twist_appointment_app/DbHelper.dart';
 import 'Doctor_details_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +15,9 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget initScreen() {
+    List<Trainer> trainers = DbHelper().Trainers();
+    List<Category> categories = DbHelper().Categories();
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.purple,
@@ -166,12 +170,13 @@ class HomePageState extends State<HomePage> {
             Container(
               height: 120,
               margin: EdgeInsets.only(top: 20, left: 20),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  demoCategories("image/2320765.png", "Pilates", "10",1),
-                  demoCategories("image/gymnastics.png", "Jimnastik", "10",2),
-                ],
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+
+                  itemCount: trainers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return demoCategories(trainers,categories[index]);
+                  }
               ),
             ),
             Container(
@@ -182,7 +187,7 @@ class HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     child: Text(
-                      'Hocalar',
+                      'Eğitmenler',
                       style: TextStyle(
                         color: Color(0xff363636),
                         fontSize: 20,
@@ -210,33 +215,13 @@ class HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: Container(
+
                 margin: EdgeInsets.only(left: 20, right: 20),
-                child: ListView(
-                  children: [
-                    demoTopRatedDr(
-                      "image/woman.png",
-                      "Çağla Öner",
-                      "Heart surgen",
-                      "4.1",
-                      "",
-                    ),
-                    demoTopRatedDr(
-                      "assets/dr_2.png",
-                      "Zeliha",
-                      "Bone Specialist",
-                      "4.2",
-                      "",
-                    ),
-                    demoTopRatedDr(
-                      "assets/dr_3.png",
-                      "Sibel",
-                      "Eyes Specialist",
-                      "4.4",
-                      "",
-                    ),
-                    demoTopRatedDr("assets/dr_2.png", "Dr. Fred Mask",
-                        "Heart surgen", "4.3", ""),
-                  ],
+                child: ListView.builder(
+                    itemCount: trainers.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return demoTopRatedDr(context, trainers[index]);
+                    }
                 ),
               ),
             )
@@ -246,11 +231,11 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget demoCategories(String img, String name, String drCount,int id) {
+  Widget demoCategories(List<Trainer> trainers,Category category) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CategoryTrainer()));
+            MaterialPageRoute(builder: (context) => CategoryTrainer(trainers:trainers,selectedCategory: category.id)));
       },
       child: Container(
         width: 100,
@@ -264,12 +249,12 @@ class HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              child: Image.asset(img,height: 50),
+              child: Image.asset(category.img,height: 50),
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
               child: Text(
-                name,
+                category.name,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 13,
@@ -286,7 +271,7 @@ class HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Text(
-                drCount,
+                category.trainerCount.toString(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 8,
@@ -300,13 +285,12 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget demoTopRatedDr(String img, String name, String speciality,
-      String rating, String distance) {
+  Widget demoTopRatedDr(BuildContext context,Trainer trainer) {
     var size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DoctorDetailPage()));
+            MaterialPageRoute(builder: (context) => DoctorDetailPage(trainer: trainer,)));
       },
       child: Container(
         height: 90,
@@ -324,7 +308,7 @@ class HomePageState extends State<HomePage> {
               margin: EdgeInsets.only(left: 20),
               height: 90,
               width: 50,
-              child: Image.asset(img),
+              child: Image.asset(trainer.img),
             ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 10),
@@ -335,7 +319,7 @@ class HomePageState extends State<HomePage> {
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Text(
-                      name,
+                      trainer.name,
                       style: TextStyle(
                         color: Color(0xff363636),
                         fontSize: 17,
@@ -349,7 +333,7 @@ class HomePageState extends State<HomePage> {
                     child: Row(
                       children: [
                         Text(
-                          name,
+                          trainer.name,
                           style: TextStyle(
                             color: Color(0xffababab),
                             fontFamily: 'Roboto',
@@ -373,7 +357,7 @@ class HomePageState extends State<HomePage> {
                               ),
                               Container(
                                 child: Text(
-                                  rating,
+                                  trainer.rating,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
