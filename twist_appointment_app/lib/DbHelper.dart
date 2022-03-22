@@ -11,13 +11,15 @@ class DbHelper{
     trainers[0] =trainer;
     trainers[1]=trainer2;
     trainers[2]=trainer3;
+
+
     return trainers;
   }
 
   List<Category> Categories(){
-    Category category = Category(1,"image/2320765.png", "Pilates", 4);
-    Category category1 = Category(2,"image/gymnastics.png", "Jimnastik", 5);
-    Category category2 = Category(3,"image/fitness.png" ,"Germe", 6);
+    Category category = Category(1,"image/2320765.png", "Pilates", 0);
+    Category category1 = Category(2,"image/gymnastics.png", "Jimnastik", 0);
+    Category category2 = Category(3,"image/fitness.png" ,"Germe", 0);
     List<Category> categories = List<Category>.filled(3, category);
     categories[0]=category;
     categories[1]=category1;

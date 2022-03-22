@@ -17,7 +17,13 @@ class HomePageState extends State<HomePage> {
   Widget initScreen() {
     List<Trainer> trainers = DbHelper().Trainers();
     List<Category> categories = DbHelper().Categories();
-
+    for (int i = 0; i<categories.length;i++){
+      for(int j = 0;j < trainers.length;j++){
+        if(categories[i].id == trainers[j].category_id){
+          categories[i].trainerCount++;
+        }
+      }
+    }
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.purple,
@@ -172,8 +178,7 @@ class HomePageState extends State<HomePage> {
               margin: EdgeInsets.only(top: 20, left: 20),
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-
-                  itemCount: trainers.length,
+                  itemCount: categories.length,
                   itemBuilder: (BuildContext context, int index) {
                     return demoCategories(trainers,categories[index]);
                   }
