@@ -19,6 +19,9 @@ class DoctorDetailPage extends StatefulWidget {
 class _DoctorDetailState extends State<DoctorDetailPage> {
   DateTime time = DateTime.now();
 
+  var selectedDay;
+  var selectedHour;
+
   List<String> months = [
     "Ocak",
     "Şubat",
@@ -35,6 +38,9 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   ];
 
   List<String> turkishDays = List<String>.filled(10, "");
+
+  List<String> clocksWeekDays = [];
+  List<String> clocksWeekend = List<String>.filled(0, "");
 
   final dictionary = {
     "Monday": "Pazartesi",
@@ -53,6 +59,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
 
   Widget initWidget(BuildContext context, Trainer trainer) {
     List<DateTime> days = possibleAppointment();
+    weekDayHours();
 
     return Scaffold(
       appBar: AppBar(
@@ -170,14 +177,26 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                   scrollDirection: Axis.horizontal,
                   itemCount: days.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return demoDates(
-                        turkishDays[index], days[index].day.toString(), true);
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            selectedDay == index ? Colors.purple : Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          selectedDay = index;
+                        });
+                        print(selectedDay);
+                      },
+                      child: demoDates(turkishDays[index],
+                          days[index].day.toString(), false, index),
+                    );
                   }),
             ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 30),
               child: Text(
-                'Morning',
+                'Saatler',
                 style: TextStyle(
                   color: Color(0xff363636),
                   fontSize: 25,
@@ -187,58 +206,43 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 20),
-              child: GridView.count(
+              margin: EdgeInsets.only(right: 20,left: 20),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 2.7,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
                 shrinkWrap: true,
-                crossAxisCount: 3,
                 physics: NeverScrollableScrollPhysics(),
-                childAspectRatio: 2.7,
-                children: [
-                  doctorTimingsData("08:30 AM", true),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 25, top: 30),
-              child: Text(
-                'Evening',
-                style: TextStyle(
-                  color: Color(0xff363636),
-                  fontSize: 25,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: 20),
-              child: GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                physics: NeverScrollableScrollPhysics(),
-                childAspectRatio: 2.6,
-                children: [
-                  doctorTimingsData("08:30 AM", true),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                  doctorTimingsData("08:30 AM", false),
-                ],
+                itemCount: clocksWeekDays.length,
+                itemBuilder: (BuildContext context, index) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          selectedHour == index ? Colors.purple : Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        selectedHour = index;
+                      });
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: doctorTimingsData(clocksWeekDays[index], false, index),
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.0),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
+                  );
+                },
               ),
             ),
             Container(
               alignment: Alignment.center,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: 54,
+              width: MediaQuery.of(context).size.width,
+              height: 50,
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Color(0xff107163),
@@ -253,7 +257,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                 ],
               ),
               child: Text(
-                'Make An Appointment',
+                'Randevu Al',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -268,148 +272,163 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
     );
   }
 
-  Widget demoDates(String day, String date, bool isSelected) {
+  Widget demoDates(String day, String date, bool isSelected, int index) {
     return isSelected
         ? Container(
-      width: 100,
-      margin: EdgeInsets.only(right: 15),
-      decoration: BoxDecoration(
-        color: Color(0xff107163),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            child: Text(
-              day,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
+            width: 100,
+            margin: EdgeInsets.only(right: 15),
+            decoration: BoxDecoration(
+              color: Color(0xffFFFFFF00),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text(
+                    day,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.all(7),
+                  child: Text(
+                    date,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          )
+        : Row(
+            children: [
+              SizedBox(
+                width: 10,
               ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            padding: EdgeInsets.all(7),
-            child: Text(
-              date,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    )
-        : Container(
-      width: 70,
-      margin: EdgeInsets.only(right: 15),
-      decoration: BoxDecoration(
-        color: Color(0xffEEEEEE),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            child: Text(
-              day,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
+              Container(
+                width: 80,
+                margin: EdgeInsets.only(right: 15),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.0),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        day,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.all(7),
+                      child: Text(
+                        date,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            padding: EdgeInsets.all(7),
-            child: Text(
-              date,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
+            ],
+          );
   }
 
-  Widget doctorTimingsData(String time, bool isSelected) {
+  Widget doctorTimingsData(String time, bool isSelected,int index) {
     return isSelected
         ? Container(
-      margin: EdgeInsets.only(left: 20, top: 10),
-      decoration: BoxDecoration(
-        color: Color(0xff107163),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 2),
-            child: Icon(
-              Icons.access_time,
-              color: Colors.white,
-              size: 18,
+            margin: EdgeInsets.only(left: 20, top: 10),
+            decoration: BoxDecoration(
+              color: Color(0xff107163),
+              borderRadius: BorderRadius.circular(5),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 2),
-            child: Text(
-              '08:30 AM',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 17,
-                fontFamily: 'Roboto',
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 2),
+                  child: Icon(
+                    Icons.access_time,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 2),
+                  child: Text(
+                    '08:30 AM',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontFamily: 'Roboto',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        : Row(
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 20, top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.0),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 2),
+                      child: Icon(
+                        Icons.access_time,
+                        color: Colors.black,
+                        size: 18,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 2),
+                      child: Text(
+                        time,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontFamily: 'Roboto',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ],
-      ),
-    )
-        : Container(
-      margin: EdgeInsets.only(left: 20, top: 10),
-      decoration: BoxDecoration(
-        color: Color(0xffEEEEEE),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 2),
-            child: Icon(
-              Icons.access_time,
-              color: Colors.black,
-              size: 18,
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 2),
-            child: Text(
-              '08:30 AM',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 17,
-                fontFamily: 'Roboto',
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          ],
+        );
   }
 
   List<DateTime> possibleAppointment() {
@@ -446,7 +465,20 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
     return days;
   }
 
+  List<String>? weekDayHours() {
+    DateTime tempDate = new DateFormat("HH:mm").parse("10:00");
+    int i = 0;
+    clocksWeekDays.clear();
+    while (i < 13) {
 
+      clocksWeekDays.add(
+          DateFormat("HH:mm").format(DateTime(0, 0, 0, tempDate.hour, i * 60)));
+      i++;
+    }
 
+  }
+
+  List<String>? weekendHours() {
+    for (int i = 10; i < 16; i++) {}
+  }
 }
-
