@@ -46,9 +46,15 @@ class HomePageState extends State<HomePage> {
             ),
           ),
           GestureDetector(
+            behavior: HitTestBehavior.translucent,
             child: Container(
               margin: EdgeInsets.only(right: 5),
-              child: Image.asset("image/girl.png"),
+              child: CircleAvatar(
+                backgroundImage:
+                new AssetImage("image/girl.png"),
+                radius: 22.0,
+              ),
+
             ),
           )
         ],

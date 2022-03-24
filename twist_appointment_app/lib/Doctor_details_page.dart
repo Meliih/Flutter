@@ -1,25 +1,59 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'DbHelper.dart';
+import 'package:intl/intl.dart';
 
 class DoctorDetailPage extends StatefulWidget {
-
   final Trainer trainer;
-  const DoctorDetailPage({Key? key, required this.trainer, }) : super(key: key);
-
+  const DoctorDetailPage({
+    Key? key,
+    required this.trainer,
+  }) : super(key: key);
 
   @override
   _DoctorDetailState createState() => _DoctorDetailState();
 }
 
 class _DoctorDetailState extends State<DoctorDetailPage> {
+  DateTime time = DateTime.now();
+
+  List<String> months = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık"
+  ];
+
+  List<String> turkishDays = List<String>.filled(10, "");
+
+  final dictionary = {
+    "Monday": "Pazartesi",
+    "Tuesday": "Salı",
+    "Wednesday": "Çarşamba",
+    "Thursday": "Perşembe",
+    "Friday": "Cuma",
+    "Saturday": "Cumartesi",
+    "Sunday": "Pazar",
+  };
+
   @override
   Widget build(BuildContext context) {
-    return initWidget(context,widget.trainer);
+    return initWidget(context, widget.trainer);
   }
 
-  Widget initWidget(BuildContext context,Trainer trainer) {
+  Widget initWidget(BuildContext context, Trainer trainer) {
+    List<DateTime> days = possibleAppointment();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -36,9 +70,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
         ),
         actions: [
           GestureDetector(
-            onTap: (){
-
-            },
+            onTap: () {},
             child: Container(
               margin: EdgeInsets.only(right: 15),
               child: Icon(
@@ -57,8 +89,9 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
               height: 150,
               decoration: BoxDecoration(
                   color: Colors.purple,
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30))
-              ),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
               child: Container(
                 margin: EdgeInsets.only(left: 30, bottom: 30),
                 child: Row(
@@ -77,7 +110,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 30),
-                            child: Text(trainer.name,
+                            child: Text(
+                              trainer.name,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
@@ -88,7 +122,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10),
-                            child: Text(trainer.domain,
+                            child: Text(
+                              trainer.domain,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -99,7 +134,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 15),
-                            child: Text('Puan: '+ trainer.rating,
+                            child: Text(
+                              'Puan: ' + trainer.rating,
                               style: TextStyle(
                                 color: Colors.yellow,
                                 fontSize: 15,
@@ -117,7 +153,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
             ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 30),
-              child: Text('April 2020',
+              child: Text(
+                months[time.month - 1] + " " + time.year.toString(),
                 style: TextStyle(
                   color: Color(0xff363636),
                   fontSize: 25,
@@ -129,23 +166,18 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
             Container(
               margin: EdgeInsets.only(left: 20, top: 20, right: 20),
               height: 90,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  demoDates("Mon", "21", true),
-                  demoDates("Tue", "22", false),
-                  demoDates("Wed", "23", false),
-                  demoDates("Thur", "24", false),
-                  demoDates("Fri", "25", false),
-                  demoDates("Sat", "26", false),
-                  demoDates("Sun", "27", false),
-                  demoDates("Mon", "28", false),
-                ],
-              ),
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: days.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return demoDates(
+                        turkishDays[index], days[index].day.toString(), true);
+                  }),
             ),
             Container(
               margin: EdgeInsets.only(left: 20, top: 30),
-              child: Text('Morning',
+              child: Text(
+                'Morning',
                 style: TextStyle(
                   color: Color(0xff363636),
                   fontSize: 25,
@@ -173,7 +205,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
             ),
             Container(
               margin: EdgeInsets.only(left: 25, top: 30),
-              child: Text('Evening',
+              child: Text(
+                'Evening',
                 style: TextStyle(
                   color: Color(0xff363636),
                   fontSize: 25,
@@ -201,7 +234,10 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
             ),
             Container(
               alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               height: 54,
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -233,8 +269,9 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   }
 
   Widget demoDates(String day, String date, bool isSelected) {
-    return isSelected ? Container(
-      width: 70,
+    return isSelected
+        ? Container(
+      width: 100,
       margin: EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
         color: Color(0xff107163),
@@ -263,13 +300,13 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                   color: Colors.white,
                   fontSize: 15,
                   fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
       ),
-    ) : Container(
+    )
+        : Container(
       width: 70,
       margin: EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
@@ -299,8 +336,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                   color: Colors.black,
                   fontSize: 15,
                   fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -309,7 +345,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   }
 
   Widget doctorTimingsData(String time, bool isSelected) {
-    return isSelected ? Container(
+    return isSelected
+        ? Container(
       margin: EdgeInsets.only(left: 20, top: 10),
       decoration: BoxDecoration(
         color: Color(0xff107163),
@@ -329,7 +366,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
           ),
           Container(
             margin: EdgeInsets.only(left: 2),
-            child: Text('08:30 AM',
+            child: Text(
+              '08:30 AM',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 17,
@@ -339,7 +377,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
           ),
         ],
       ),
-    ) : Container(
+    )
+        : Container(
       margin: EdgeInsets.only(left: 20, top: 10),
       decoration: BoxDecoration(
         color: Color(0xffEEEEEE),
@@ -359,7 +398,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
           ),
           Container(
             margin: EdgeInsets.only(left: 2),
-            child: Text('08:30 AM',
+            child: Text(
+              '08:30 AM',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 17,
@@ -371,4 +411,42 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
       ),
     );
   }
+
+  List<DateTime> possibleAppointment() {
+    List<DateTime> days = List<DateTime>.filled(10, DateTime(20, 1, 1));
+
+    for (int i = 0; i < days.length; i++) {
+      days[i] = DateTime(time.year, time.month, time.day + i);
+      var t;
+      switch (days[i].weekday) {
+        case 1:
+          t = "Pazartesi";
+          break;
+        case 2:
+          t = "Salı";
+          break;
+        case 3:
+          t = "Çarşamba";
+          break;
+        case 4:
+          t = "Perşembe";
+          break;
+        case 5:
+          t = "Cuma";
+          break;
+        case 6:
+          t = "Cumartesi";
+          break;
+        case 7:
+          t = "Pazar";
+          break;
+      }
+      turkishDays[i] = t;
+    }
+    return days;
+  }
+
+
+
 }
+
