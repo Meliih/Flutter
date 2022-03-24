@@ -19,7 +19,8 @@ class DoctorDetailPage extends StatefulWidget {
 class _DoctorDetailState extends State<DoctorDetailPage> {
   DateTime time = DateTime.now();
 
-  var selectedDay;
+  bool gridUse = false;
+  var selectedDay ;
   var selectedHour;
 
   List<String> months = [
@@ -37,10 +38,10 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
     "Aralık"
   ];
 
-  List<String> turkishDays = List<String>.filled(10, "");
+  List<String> turkishDays = List<String>.filled(10, "0");
 
   List<String> clocksWeekDays = [];
-  List<String> clocksWeekend = List<String>.filled(0, "");
+  List<String> clocksWeekend = [];
 
   final dictionary = {
     "Monday": "Pazartesi",
@@ -59,7 +60,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
 
   Widget initWidget(BuildContext context, Trainer trainer) {
     List<DateTime> days = possibleAppointment();
-    weekDayHours();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -177,6 +178,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                   scrollDirection: Axis.horizontal,
                   itemCount: days.length,
                   itemBuilder: (BuildContext context, int index) {
+
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary:
@@ -207,37 +209,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
             ),
             Container(
               margin: EdgeInsets.only(right: 20,left: 20),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 2.7,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: clocksWeekDays.length,
-                itemBuilder: (BuildContext context, index) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary:
-                          selectedHour == index ? Colors.purple : Colors.white,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedHour = index;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: doctorTimingsData(clocksWeekDays[index], false, index),
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.0),
-                          borderRadius: BorderRadius.circular(15)),
-                    ),
-                  );
-                },
-              ),
+              child: buildGrid(),
             ),
             Container(
               alignment: Alignment.center,
@@ -469,7 +441,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
     DateTime tempDate = new DateFormat("HH:mm").parse("10:00");
     int i = 0;
     clocksWeekDays.clear();
-    while (i < 13) {
+    while (i <13) {
 
       clocksWeekDays.add(
           DateFormat("HH:mm").format(DateTime(0, 0, 0, tempDate.hour, i * 60)));
@@ -479,6 +451,59 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   }
 
   List<String>? weekendHours() {
-    for (int i = 10; i < 16; i++) {}
+    DateTime tempDate = new DateFormat("HH:mm").parse("10:00");
+    int i = 0;
+    clocksWeekDays.clear();
+    while (i < 7) {
+      clocksWeekDays.add(
+          DateFormat("HH:mm").format(DateTime(0, 0, 0, tempDate.hour, i * 60)));
+      i++;
+    }
+  }
+
+  GridView buildGrid( ){
+    if(gridUse == false){
+      selectedDay = 0;
+    }
+    gridUse = true;
+    if (turkishDays[selectedDay] == "Cumartesi" || turkishDays[selectedDay] == "Pazar"){
+      weekendHours();
+    }else{
+      print(selectedDay);
+      weekDayHours();
+    }
+
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+
+          maxCrossAxisExtent: 200,
+          childAspectRatio: 2.7,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10),
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: clocksWeekDays.length,
+      itemBuilder: (BuildContext context, index) {
+
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary:
+            selectedHour == index ? Colors.purple : Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              selectedHour = index;
+            });
+          },
+          child: Container(
+            alignment: Alignment.center,
+            child: doctorTimingsData(clocksWeekDays[index], false, index),
+            decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.0),
+                borderRadius: BorderRadius.circular(15)),
+          ),
+        );
+      },
+    );
   }
 }
