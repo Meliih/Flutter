@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twist_appointment_app/CategoryTrainer.dart';
 import 'package:twist_appointment_app/DbHelper.dart';
+import 'package:twist_appointment_app/NavigationDrawer.dart';
 import 'Doctor_details_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,14 +30,11 @@ class HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.purple,
+      drawer: NavigationDrawer(),
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.purple,
         //centerTitle: true,
-        leading: Icon(
-          Icons.menu,
-          color: Colors.white,
-        ),
         actions: [
           GestureDetector(
             child: Container(
