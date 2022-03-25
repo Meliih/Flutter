@@ -5,16 +5,23 @@ import 'package:twist_appointment_app/HomePage.dart';
 
 import 'Signup.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
 
-  double getSmallDiameter(BuildContext context) =>
-      MediaQuery.of(context).size.width * 2 / 3;
-  double getBiglDiameter(BuildContext context) =>
-      MediaQuery.of(context).size.width * 7 / 8;
+class LoginPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LoginPage();
+}
 
+bool isHidden = false;
+
+class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+
+    double getSmallDiameter(BuildContext context) =>
+        MediaQuery.of(context).size.width * 2 / 3;
+    double getBiglDiameter(BuildContext context) =>
+        MediaQuery.of(context).size.width * 7 / 8;
+
     return Scaffold(
       backgroundColor: const Color(0xFFEEEEEE),
       body: Stack(
@@ -91,7 +98,7 @@ class LoginPage extends StatelessWidget {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: Colors.grey.shade100)),
+                                  BorderSide(color: Colors.grey.shade100)),
                               labelText: "Email",
                               enabledBorder: InputBorder.none,
                               labelStyle: const TextStyle(color: Colors.grey)),
@@ -106,15 +113,19 @@ class LoginPage extends StatelessWidget {
                       Container(
                         color: Colors.white,
                         child: TextField(
-                          obscureText: true,
+                          obscureText: isHidden,
                           decoration: InputDecoration(
                               icon: const Icon(
-                                Icons.vpn_key,
+                                Icons.lock,
                                 color: Colors.purple,
+                              ),
+                              suffixIcon: IconButton(
+                                icon: isHidden ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
+                                onPressed:  togglePasswordVisibilty,
                               ),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: Colors.grey.shade100)),
+                                  BorderSide(color: Colors.grey.shade100)),
                               labelText: "Şifre",
                               enabledBorder: InputBorder.none,
                               labelStyle: const TextStyle(
@@ -132,7 +143,7 @@ class LoginPage extends StatelessWidget {
                         child: const Text(
                           "Şifremi Unuttum?",
                           style:
-                              TextStyle(color: Color(0xFFFF4891), fontSize: 11),
+                          TextStyle(color: Color(0xFFFF4891), fontSize: 11),
                         ))),
                 Container(
                   margin:  EdgeInsets.fromLTRB(20, 0, 20, 30),
@@ -151,33 +162,33 @@ class LoginPage extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.5,
                           height: 50,
-                            child: Container(
-                              child: Material(
+                          child: Container(
+                            child: Material(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.transparent,
+                              child: InkWell(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(20),
-                                  splashColor: Colors.amber,
-                                  child: Center(
-                                    child: Text(
-                                      "Giriş Yap",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700),
-                                    ),
+                                splashColor: Colors.amber,
+                                child: Center(
+                                  child: Text(
+                                    "Giriş Yap",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  gradient: const LinearGradient(
-                                      colors: [
-                                        Colors.purple,
-                                        Color(0xFFFF4891)
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter)),
                             ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: const LinearGradient(
+                                    colors: [
+                                      Colors.purple,
+                                      Color(0xFFFF4891)
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter)),
+                          ),
 
                         ),
                       ),
@@ -215,5 +226,14 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
+
   }
+
+
+  void togglePasswordVisibilty() => setState(() => isHidden = !isHidden);
+
+
+
+
 }
+
