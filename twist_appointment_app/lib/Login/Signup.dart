@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 
 
-class Signup extends StatelessWidget {
-  const Signup({Key? key}) : super(key: key);
 
-  double getSmallDiameter(BuildContext context) =>
-      MediaQuery.of(context).size.width * 2 / 3;
-  double getBiglDiameter(BuildContext context) =>
-      MediaQuery.of(context).size.width * 7 / 8;
+class SignUp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _SignUp();
+}
 
+bool isHidden = false;
+
+class _SignUp extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
+
+    double getSmallDiameter(BuildContext context) =>
+        MediaQuery.of(context).size.width * 2 / 3;
+    double getBiglDiameter(BuildContext context) =>
+        MediaQuery.of(context).size.width * 7 / 8;
+
+
     return Scaffold(
       backgroundColor: const Color(0xFFEEEEEE),
       body: Stack(
@@ -125,13 +133,16 @@ class Signup extends StatelessWidget {
                         ),
                       ),
                       TextField(
-                        obscureText: true,
+                        obscureText: isHidden,
                         decoration: InputDecoration(
                             icon: const Icon(
-                              Icons.vpn_key,
+                              Icons.lock,
                               color: Colors.purple,
                             ),
-
+                            suffixIcon: IconButton(
+                              icon: isHidden ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
+                              onPressed:  togglePasswordVisibilty,
+                            ),
                             labelText: "Şifre",
                             enabledBorder: InputBorder.none,
                             labelStyle: const TextStyle(color: Colors.grey)),
@@ -143,13 +154,16 @@ class Signup extends StatelessWidget {
                         ),
                       ),
                       TextField(
-                        obscureText: true,
+                        obscureText: isHidden,
                         decoration: InputDecoration(
                             icon: const Icon(
-                              Icons.vpn_key,
+                              Icons.lock,
                               color: Colors.purple,
                             ),
-
+                            suffixIcon: IconButton(
+                              icon: isHidden ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
+                              onPressed:  togglePasswordVisibilty,
+                            ),
                             labelText: "Şifrenizi Yeniden Giriniz",
                             enabledBorder: InputBorder.none,
                             labelStyle: const TextStyle(color: Colors.grey)),
@@ -208,4 +222,9 @@ class Signup extends StatelessWidget {
       ),
     );
   }
+
+  void togglePasswordVisibilty() => setState(() => isHidden = !isHidden);
+
+
+
 }

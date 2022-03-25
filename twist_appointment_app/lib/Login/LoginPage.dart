@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:twist_appointment_app/HomePage.dart';
+import 'package:twist_appointment_app/Login/ForgetPassword.dart';
 
 import 'Signup.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,7 +16,6 @@ bool isHidden = false;
 class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-
     double getSmallDiameter(BuildContext context) =>
         MediaQuery.of(context).size.width * 2 / 3;
     double getBiglDiameter(BuildContext context) =>
@@ -34,10 +33,7 @@ class _LoginPage extends State<LoginPage> {
               height: getSmallDiameter(context),
               decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                      colors: [Colors.pinkAccent, Colors.purple],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter)),
+                  color: Colors.purple),
             ),
           ),
           Positioned(
@@ -57,10 +53,7 @@ class _LoginPage extends State<LoginPage> {
               height: getBiglDiameter(context),
               decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                      colors: [Colors.pink, Colors.purple],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter)),
+                  color: Colors.purple),
             ),
           ),
           Positioned(
@@ -98,8 +91,9 @@ class _LoginPage extends State<LoginPage> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide:
-                                  BorderSide(color: Colors.grey.shade100)),
+                                      BorderSide(color: Colors.grey.shade100)),
                               labelText: "Email",
+                              hintText: "twistpilates@gmail.com",
                               enabledBorder: InputBorder.none,
                               labelStyle: const TextStyle(color: Colors.grey)),
                         ),
@@ -120,12 +114,14 @@ class _LoginPage extends State<LoginPage> {
                                 color: Colors.purple,
                               ),
                               suffixIcon: IconButton(
-                                icon: isHidden ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
-                                onPressed:  togglePasswordVisibilty,
+                                icon: isHidden
+                                    ? Icon(Icons.visibility_off)
+                                    : Icon(Icons.visibility),
+                                onPressed: togglePasswordVisibilty,
                               ),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide:
-                                  BorderSide(color: Colors.grey.shade100)),
+                                      BorderSide(color: Colors.grey.shade100)),
                               labelText: "Şifre",
                               enabledBorder: InputBorder.none,
                               labelStyle: const TextStyle(
@@ -138,15 +134,21 @@ class _LoginPage extends State<LoginPage> {
                 ),
                 Align(
                     alignment: Alignment.centerRight,
-                    child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 20, 10),
-                        child: const Text(
-                          "Şifremi Unuttum?",
-                          style:
-                          TextStyle(color: Color(0xFFFF4891), fontSize: 11),
-                        ))),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => ForgetPassword()));
+                      },
+                      child: Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 20, 10),
+                          child: const Text(
+                            "Şifremi Unuttum?",
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 15),
+                          )),
+                    )),
                 Container(
-                  margin:  EdgeInsets.fromLTRB(20, 0, 20, 30),
+                  margin: EdgeInsets.fromLTRB(20, 0, 20, 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -181,15 +183,8 @@ class _LoginPage extends State<LoginPage> {
                             ),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.purple,
-                                      Color(0xFFFF4891)
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
+                                color: Colors.purple  ),
                           ),
-
                         ),
                       ),
                     ],
@@ -199,22 +194,22 @@ class _LoginPage extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "DON'T HAVE AN ACCOUNT ? ",
+                      "Aramıza Katılmak İstermisiniz ? ",
                       style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 13,
                           color: Colors.grey,
                           fontWeight: FontWeight.w500),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
+                            MaterialPageRoute(builder: (context) => SignUp()));
                       },
                       child: Text(
                         " Hesap Oluştur",
                         style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFFFF4891),
+                            fontSize: 13,
+                            color: Colors.black,
                             fontWeight: FontWeight.w700),
                       ),
                     )
@@ -226,14 +221,7 @@ class _LoginPage extends State<LoginPage> {
         ],
       ),
     );
-
   }
 
-
   void togglePasswordVisibilty() => setState(() => isHidden = !isHidden);
-
-
-
-
 }
-
