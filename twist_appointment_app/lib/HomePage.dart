@@ -19,8 +19,10 @@ class HomePageState extends State<HomePage> {
     List<Category> categories = DbHelper().Categories();
     for (int i = 0; i<categories.length;i++){
       for(int j = 0;j < trainers.length;j++){
-        if(categories[i].id == trainers[j].category_id){
-          categories[i].trainerCount++;
+        for (int k=0; k < trainers[j].category_id.length ; k++) {
+          if(categories[i].id == trainers[j].category_id[k]) {
+              categories[i].trainerCount++;
+          }
         }
       }
     }

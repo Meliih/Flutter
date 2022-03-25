@@ -59,10 +59,11 @@ class _CategoryTrainerState extends State<CategoryTrainer> {
               child: ListView.builder(
                   itemCount: trainers.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if (selectedCategory == trainers[index].category_id)
-                      {
+                    for(int i = 0; i<trainers[index].category_id.length; i++) {
+                      if (selectedCategory == trainers[index].category_id[i]) {
                         return demoTopRatedDr(context, trainers[index]);
                       }
+                    }
                     return SizedBox(width: 0,);
                   }
               ),

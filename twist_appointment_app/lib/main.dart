@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twist_appointment_app/Login/LoginPage.dart';
 
 import 'HomePage.dart';
 
@@ -18,7 +19,7 @@ class AppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.purple,
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 

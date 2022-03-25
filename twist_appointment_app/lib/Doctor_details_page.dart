@@ -43,15 +43,15 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   List<String> clocksWeekDays = [];
   List<String> clocksWeekend = [];
 
-  final dictionary = {
-    "Monday": "Pazartesi",
-    "Tuesday": "Salı",
-    "Wednesday": "Çarşamba",
-    "Thursday": "Perşembe",
-    "Friday": "Cuma",
-    "Saturday": "Cumartesi",
-    "Sunday": "Pazar",
-  };
+  final trDays = [
+     "Pazartesi",
+     "Salı",
+     "Çarşamba",
+     "Perşembe",
+     "Cuma",
+     "Cumartesi",
+     "Pazar",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +191,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                         print(selectedDay);
                       },
                       child: demoDates(turkishDays[index],
-                          days[index].day.toString(), false, index),
+                          days[index].day.toString(), index),
                     );
                   }),
             ),
@@ -244,45 +244,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
     );
   }
 
-  Widget demoDates(String day, String date, bool isSelected, int index) {
-    return isSelected
-        ? Container(
-            width: 100,
-            margin: EdgeInsets.only(right: 15),
-            decoration: BoxDecoration(
-              color: Color(0xffFFFFFF00),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: Text(
-                    day,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.all(7),
-                  child: Text(
-                    date,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          )
-        : Row(
+  Widget demoDates(String day, String date, int index) {
+    return Row(
             children: [
               SizedBox(
                 width: 10,
@@ -328,41 +291,8 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
           );
   }
 
-  Widget doctorTimingsData(String time, bool isSelected,int index) {
-    return isSelected
-        ? Container(
-            margin: EdgeInsets.only(left: 20, top: 10),
-            decoration: BoxDecoration(
-              color: Color(0xff107163),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 2),
-                  child: Icon(
-                    Icons.access_time,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 2),
-                  child: Text(
-                    '08:30 AM',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontFamily: 'Roboto',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        : Row(
+  Widget doctorTimingsData(String time,int index) {
+    return Row(
           children: [
             SizedBox(
               width: 10,
@@ -408,55 +338,20 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
 
     for (int i = 0; i < days.length; i++) {
       days[i] = DateTime(time.year, time.month, time.day + i);
-      var t;
-      switch (days[i].weekday) {
-        case 1:
-          t = "Pazartesi";
-          break;
-        case 2:
-          t = "Salı";
-          break;
-        case 3:
-          t = "Çarşamba";
-          break;
-        case 4:
-          t = "Perşembe";
-          break;
-        case 5:
-          t = "Cuma";
-          break;
-        case 6:
-          t = "Cumartesi";
-          break;
-        case 7:
-          t = "Pazar";
-          break;
-      }
-      turkishDays[i] = t;
+      turkishDays[i] = trDays [days[i].weekday - 1];
     }
     return days;
   }
 
-  List<String>? weekDayHours() {
+  List<String>? weekendHours(int day) {
+    var arr =[22,16];
     DateTime tempDate = new DateFormat("HH:mm").parse("10:00");
     int i = 0;
     clocksWeekDays.clear();
-    while (i <13) {
-
+    while (tempDate.hour < arr[day]) {
       clocksWeekDays.add(
-          DateFormat("HH:mm").format(DateTime(0, 0, 0, tempDate.hour, i * 60)));
-      i++;
-    }
-
-  }
-
-  List<String>? weekendHours() {
-    DateTime tempDate = new DateFormat("HH:mm").parse("10:00");
-    int i = 0;
-    clocksWeekDays.clear();
-    while (i < 7) {
-      clocksWeekDays.add(
-          DateFormat("HH:mm").format(DateTime(0, 0, 0, tempDate.hour, i * 60)));
+          DateFormat("HH:mm").format(tempDate));
+      tempDate = DateTime(0, 0, 0, tempDate.hour,60);
       i++;
     }
   }
@@ -467,10 +362,10 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
     }
     gridUse = true;
     if (turkishDays[selectedDay] == "Cumartesi" || turkishDays[selectedDay] == "Pazar"){
-      weekendHours();
+      weekendHours(1);
     }else{
       print(selectedDay);
-      weekDayHours();
+      weekendHours(0);
     }
 
     return GridView.builder(
@@ -497,7 +392,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
           },
           child: Container(
             alignment: Alignment.center,
-            child: doctorTimingsData(clocksWeekDays[index], false, index),
+            child: doctorTimingsData(clocksWeekDays[index], index),
             decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.0),
                 borderRadius: BorderRadius.circular(15)),
