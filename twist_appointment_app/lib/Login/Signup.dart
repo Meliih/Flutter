@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-
 
 
 class Signup extends StatelessWidget {
@@ -72,10 +69,10 @@ class Signup extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      //border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10)),
-                  margin: const EdgeInsets.fromLTRB(20, 300, 20, 10),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 25),
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(19)),
+                  margin: const EdgeInsets.fromLTRB(20, 230, 20, 10),
+                  padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Column(
                     children:  <Widget>[
                       TextField(
@@ -84,12 +81,14 @@ class Signup extends StatelessWidget {
                               Icons.person,
                               color: Colors.purple,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100 )),
                             labelText: "Ad",
                             enabledBorder: InputBorder.none,
                             labelStyle: const TextStyle(color: Colors.grey)),
+                      ),
+                      Container(
+                        child: Divider(
+                          color: Colors.black,
+                        ),
                       ),
                       TextField(
                         obscureText: false,
@@ -98,13 +97,15 @@ class Signup extends StatelessWidget {
                               Icons.person,
                               color: Colors.purple,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100)),
                             labelText: "Soyad",
                             enabledBorder: InputBorder.none,
                             labelStyle: const TextStyle(color: Colors.grey)),
 
+                      ),
+                      Container(
+                        child: Divider(
+                          color: Colors.black,
+                        ),
                       ),
                       TextField(
                         obscureText: false,
@@ -113,28 +114,15 @@ class Signup extends StatelessWidget {
                               Icons.mail_outline,
                               color: Colors.purple,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100)),
                             labelText: "Email",
                             enabledBorder: InputBorder.none,
                             labelStyle: const TextStyle(color: Colors.grey)),
 
                       ),
-                      TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            icon: const Icon(
-                              Icons.vpn_key,
-                              color: Colors.purple,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100)),
-                            labelText: "Şifre",
-                            enabledBorder: InputBorder.none,
-                            labelStyle: const TextStyle(color: Colors.grey)),
-
+                      Container(
+                        child: Divider(
+                          color: Colors.black,
+                        ),
                       ),
                       TextField(
                         obscureText: true,
@@ -143,9 +131,25 @@ class Signup extends StatelessWidget {
                               Icons.vpn_key,
                               color: Colors.purple,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100)),
+
+                            labelText: "Şifre",
+                            enabledBorder: InputBorder.none,
+                            labelStyle: const TextStyle(color: Colors.grey)),
+
+                      ),
+                      Container(
+                        child: Divider(
+                          color: Colors.black,
+                        ),
+                      ),
+                      TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            icon: const Icon(
+                              Icons.vpn_key,
+                              color: Colors.purple,
+                            ),
+
                             labelText: "Şifrenizi Yeniden Giriniz",
                             enabledBorder: InputBorder.none,
                             labelStyle: const TextStyle(color: Colors.grey)),

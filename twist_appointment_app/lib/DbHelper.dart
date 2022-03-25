@@ -57,10 +57,11 @@ class Trainer {
 class User {
   late int id;
   late String name;
+  late String surname;
   late String img;
   late String password;
   late String email;
   late String userName;
-  late String surname;
+
 
 }

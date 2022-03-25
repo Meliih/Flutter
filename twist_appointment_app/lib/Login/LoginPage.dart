@@ -1,10 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:twist_appointment_app/HomePage.dart';
 
 import 'Signup.dart';
-
-
-
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class LoginPage extends StatelessWidget {
               decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                      colors: [Colors.pinkAccent,Colors.purple],
+                      colors: [Colors.pinkAccent, Colors.purple],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter)),
             ),
@@ -52,7 +51,7 @@ class LoginPage extends StatelessWidget {
               decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                      colors: [Colors.pink,Colors.purple ],
+                      colors: [Colors.pink, Colors.purple],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter)),
             ),
@@ -74,39 +73,54 @@ class LoginPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      //border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10)),
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(19)),
                   margin: const EdgeInsets.fromLTRB(20, 300, 20, 10),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 25),
+                  padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                   child: Column(
-                    children:  <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                            icon: const Icon(
-                              Icons.email,
-                              color: Colors.purple,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100 )),
-                            labelText: "Email",
-                            enabledBorder: InputBorder.none,
-                            labelStyle: const TextStyle(color: Colors.grey)),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        color: Colors.white,
+                        child: TextField(
+                          decoration: InputDecoration(
+                              icon: const Icon(
+                                Icons.email,
+                                color: Colors.purple,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade100)),
+                              labelText: "Email",
+                              enabledBorder: InputBorder.none,
+                              labelStyle: const TextStyle(color: Colors.grey)),
+                        ),
                       ),
-                      TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            icon: const Icon(
-                              Icons.vpn_key,
-                              color: Colors.purple,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.grey.shade100)),
-                            labelText: "Şifre",
-                            enabledBorder: InputBorder.none,
-                            labelStyle: const TextStyle(color: Colors.grey)),
-
+                      Container(
+                        color: Colors.white,
+                        child: Divider(
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        color: Colors.white,
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              icon: const Icon(
+                                Icons.vpn_key,
+                                color: Colors.purple,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade100)),
+                              labelText: "Şifre",
+                              enabledBorder: InputBorder.none,
+                              labelStyle: const TextStyle(
+                                color: Colors.grey,
+                              )),
+                        ),
                       )
                     ],
                   ),
@@ -118,52 +132,61 @@ class LoginPage extends StatelessWidget {
                         child: const Text(
                           "Şifremi Unuttum?",
                           style:
-                          TextStyle(color: Color(0xFFFF4891), fontSize: 11),
+                              TextStyle(color: Color(0xFFFF4891), fontSize: 11),
                         ))),
                 Container(
-                  margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                  margin:  EdgeInsets.fromLTRB(20, 0, 20, 30),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: 40,
+                      GestureDetector(
+                        onTap: () {
+                          print("la oglum gelsene");
+                          Navigator.push(
+                              context,
+                              //kontrol yapıcaz
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        },
                         child: Container(
-                          child: Material(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(20),
-                              splashColor: Colors.amber,
-                              onTap: () {},
-                              child: const Center(
-                                child: Text(
-                                  "Giriş Yap",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700),
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: 50,
+                            child: Container(
+                              child: Material(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(20),
+                                  splashColor: Colors.amber,
+                                  child: Center(
+                                    child: Text(
+                                      "Giriş Yap",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
                                 ),
                               ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: const LinearGradient(
+                                      colors: [
+                                        Colors.purple,
+                                        Color(0xFFFF4891)
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              gradient: const LinearGradient(
-                                  colors: [
-                                    Colors.purple,
-                                    Color(0xFFFF4891)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter)),
+
                         ),
                       ),
-
                     ],
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  <Widget>[
+                  children: <Widget>[
                     Text(
                       "DON'T HAVE AN ACCOUNT ? ",
                       style: TextStyle(
@@ -172,7 +195,7 @@ class LoginPage extends StatelessWidget {
                           fontWeight: FontWeight.w500),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Signup()));
                       },
