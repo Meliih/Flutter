@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -20,7 +19,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   DateTime time = DateTime.now();
 
   bool gridUse = false;
-  var selectedDay ;
+  var selectedDay;
   var selectedHour;
 
   List<String> months = [
@@ -44,13 +43,13 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
   List<String> clocksWeekend = [];
 
   final trDays = [
-     "Pazartesi",
-     "Salı",
-     "Çarşamba",
-     "Perşembe",
-     "Cuma",
-     "Cumartesi",
-     "Pazar",
+    "Pazartesi",
+    "Salı",
+    "Çarşamba",
+    "Perşembe",
+    "Cuma",
+    "Cumartesi",
+    "Pazar",
   ];
 
   @override
@@ -60,7 +59,6 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
 
   Widget initWidget(BuildContext context, Trainer trainer) {
     List<DateTime> days = possibleAppointment();
-
 
     return Scaffold(
       appBar: AppBar(
@@ -178,7 +176,6 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
                   scrollDirection: Axis.horizontal,
                   itemCount: days.length,
                   itemBuilder: (BuildContext context, int index) {
-
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary:
@@ -208,7 +205,7 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 20,left: 20),
+              margin: EdgeInsets.only(right: 20, left: 20),
               child: buildGrid(),
             ),
             Container(
@@ -246,91 +243,91 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
 
   Widget demoDates(String day, String date, int index) {
     return Row(
+      children: [
+        SizedBox(
+          width: 10,
+        ),
+        Container(
+          width: 80,
+          margin: EdgeInsets.only(right: 15),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.0),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 10,
+              Container(
+                child: Text(
+                  day,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
               Container(
-                width: 80,
-                margin: EdgeInsets.only(right: 15),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.0),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        day,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      padding: EdgeInsets.all(7),
-                      child: Text(
-                        date,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.all(7),
+                child: Text(
+                  date,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],
-          );
+          ),
+        ),
+      ],
+    );
   }
 
-  Widget doctorTimingsData(String time,int index) {
+  Widget doctorTimingsData(String time, int index) {
     return Row(
-          children: [
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-                margin: EdgeInsets.only(left: 20, top: 10),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.0),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 2),
-                      child: Icon(
-                        Icons.access_time,
-                        color: Colors.black,
-                        size: 18,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 2),
-                      child: Text(
-                        time,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontFamily: 'Roboto',
-                        ),
-                      ),
-                    ),
-                  ],
+      children: [
+        SizedBox(
+          width: 10,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20, top: 10),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.0),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(right: 2),
+                child: Icon(
+                  Icons.access_time,
+                  color: Colors.black,
+                  size: 18,
                 ),
               ),
-          ],
-        );
+              Container(
+                margin: EdgeInsets.only(left: 2),
+                child: Text(
+                  time,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontFamily: 'Roboto',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   List<DateTime> possibleAppointment() {
@@ -338,39 +335,38 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
 
     for (int i = 0; i < days.length; i++) {
       days[i] = DateTime(time.year, time.month, time.day + i);
-      turkishDays[i] = trDays [days[i].weekday - 1];
+      turkishDays[i] = trDays[days[i].weekday - 1];
     }
     return days;
   }
 
   List<String>? weekendHours(int day) {
-    var arr =[22,16];
+    var arr = [22, 16];
     DateTime tempDate = new DateFormat("HH:mm").parse("10:00");
     int i = 0;
     clocksWeekDays.clear();
     while (tempDate.hour < arr[day]) {
-      clocksWeekDays.add(
-          DateFormat("HH:mm").format(tempDate));
-      tempDate = DateTime(0, 0, 0, tempDate.hour,60);
+      clocksWeekDays.add(DateFormat("HH:mm").format(tempDate));
+      tempDate = DateTime(0, 0, 0, tempDate.hour, 60);
       i++;
     }
   }
 
-  GridView buildGrid( ){
-    if(gridUse == false){
+  GridView buildGrid() {
+    if (gridUse == false) {
       selectedDay = 0;
     }
     gridUse = true;
-    if (turkishDays[selectedDay] == "Cumartesi" || turkishDays[selectedDay] == "Pazar"){
+    if (turkishDays[selectedDay] == "Cumartesi" ||
+        turkishDays[selectedDay] == "Pazar") {
       weekendHours(1);
-    }else{
+    } else {
       print(selectedDay);
       weekendHours(0);
     }
 
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-
           maxCrossAxisExtent: 200,
           childAspectRatio: 2.7,
           crossAxisSpacing: 10,
@@ -379,11 +375,9 @@ class _DoctorDetailState extends State<DoctorDetailPage> {
       physics: NeverScrollableScrollPhysics(),
       itemCount: clocksWeekDays.length,
       itemBuilder: (BuildContext context, index) {
-
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary:
-            selectedHour == index ? Colors.purple : Colors.white,
+            primary: selectedHour == index ? Colors.purple : Colors.white,
           ),
           onPressed: () {
             setState(() {
